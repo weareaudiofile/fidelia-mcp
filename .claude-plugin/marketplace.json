@@ -1,0 +1,15 @@
+{
+  "name": "fidelia-mcp",
+  "description": "Fidelia's plugin for Claude Code: play and explore the music you own in Fidelia for Mac.",
+  "owner": {
+    "name": "Audiofile Engineering",
+    "url": "https://audiofile.engineering"
+  },
+  "plugins": [
+    {
+      "name": "fidelia",
+      "source": "./plugins/fidelia",
+      "description": "Play and explore the music you own in Fidelia, an audiophile music player for Mac."
+    }
+  ]
+}

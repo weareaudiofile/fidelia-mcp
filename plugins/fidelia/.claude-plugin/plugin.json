@@ -1,0 +1,40 @@
+{
+  "name": "fidelia",
+  "displayName": "Fidelia",
+  "version": "1.0.0",
+  "description": "Play and explore the music you own in Fidelia, an audiophile music player for Mac.",
+  "author": {
+    "name": "Audiofile Engineering",
+    "url": "https://audiofile.engineering"
+  },
+  "homepage": "https://audiofile.engineering/fidelia",
+  "repository": "https://github.com/weareaudiofile/fidelia-mcp",
+  "license": "MIT",
+  "keywords": [
+    "music",
+    "music-player",
+    "music-library",
+    "audiophile",
+    "macos"
+  ],
+  "icon": "assets/fidelia-icon-512.png",
+  "documentationUrl": "https://github.com/weareaudiofile/fidelia-mcp#readme",
+  "supportUrl": "https://audiofile.engineering/support",
+  "privacyPolicyUrl": "https://audiofile.engineering/privacy",
+  "userConfig": {
+    "url": {
+      "type": "string",
+      "title": "Fidelia address",
+      "description": "The address in Fidelia ▸ Settings ▸ Agent. Leave it unless you changed the port there.",
+      "default": "http://127.0.0.1:38412/mcp",
+      "required": true
+    },
+    "token": {
+      "type": "string",
+      "title": "Fidelia token",
+      "description": "The token from Fidelia ▸ Settings ▸ Agent. A new token there turns this one away.",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}
