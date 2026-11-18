@@ -32,7 +32,7 @@ When Fidelia isn't running, the extension opens it with no window, so asking Cla
 
 ### Claude Code
 
-Add this repository as a plugin marketplace and install the plugin. Claude Code asks for two settings: Fidelia's address (keep `http://127.0.0.1:38412/mcp` unless you changed the port) and the token from Fidelia's Settings ▸ Agent:
+Add this repository as a plugin marketplace and install the plugin. Claude Code asks for the token from Fidelia's Settings ▸ Agent and for Fidelia's port (keep 38412 unless you changed it there). The plugin runs the same bridge as the Claude extension, so it needs Node.js on your `PATH`:
 
 ```text
 /plugin install fidelia --marketplace weareaudiofile/fidelia-mcp
@@ -117,7 +117,7 @@ Lists come in pages, because a library can run to 100,000 tracks. A page of trac
 
 ## What's in this repository
 
-- `plugins/fidelia/`: the Claude Code plugin. It runs no code of its own: it connects Claude Code to Fidelia at the address in its settings (`http://127.0.0.1:38412/mcp` unless you changed the port), with your token in the `Authorization` header.
+- `plugins/fidelia/`: the Claude Code plugin. It runs its own copy of `server/index.js` (below) with Node.js, with Fidelia's port and your token from its settings.
 - `server/index.js`: the script inside `Fidelia.mcpb`, which Claude runs with its own Node. It hands each message to Fidelia at 127.0.0.1 with your token and writes back Fidelia's answer. When nothing answers, it opens Fidelia with no window (`open -g -b com.audiofile.fidelia --args -agent.headless YES`) and tries again for up to 45 seconds. It uses only Node's own modules.
 - `server.json`: Fidelia's entry in the official MCP Registry.
 - `glama/`, `Dockerfile` and `glama.json`: for Glama's automated build check only. Fidelia's server is part of the Fidelia app, so Glama's Linux build machine runs `server/index.js` against a stand-in that lists Fidelia's real tools (`glama/tools.json`, read from Fidelia itself) and answers every call with a note to install Fidelia. People never run these files.
