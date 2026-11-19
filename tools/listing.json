@@ -1,0 +1,43 @@
+{
+  "app": "Fidelia",
+  "needs": "Fidelia for Mac 2.13 or later",
+  "repository": "weareaudiofile/fidelia-mcp",
+  "registry": {
+    "name": "engineering.audiofile/fidelia",
+    "domain": "audiofile.engineering"
+  },
+  "extension": "Fidelia.mcpb",
+  "bridges": [
+    "server/index.js",
+    "plugins/fidelia/server/index.js"
+  ],
+  "icon": "assets/fidelia-icon-1024.png",
+  "iconSizes": {
+    "assets/fidelia-icon-512.png": 512,
+    "assets/fidelia-icon-400.png": 400,
+    "plugins/fidelia/assets/fidelia-icon-512.png": 512
+  },
+  "registryIcons": {
+    "assets/fidelia-icon-1024.png": 1024,
+    "assets/fidelia-icon-512.png": 512
+  },
+  "plugin": "plugins/fidelia/.claude-plugin/plugin.json",
+  "toolsTable": {
+    "file": "README.md",
+    "mode": "write",
+    "words": {
+      "reads": "reads",
+      "acts": "acts",
+      "writes": "writes files"
+    }
+  },
+  "prose": [
+    "README.md",
+    "plugins/fidelia/README.md",
+    "plugins/fidelia/skills/fidelia/SKILL.md"
+  ],
+  "committer": {
+    "name": "Patrick Krekelberg",
+    "email": "1598712+crayfellow@users.noreply.github.com"
+  }
+}

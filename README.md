@@ -120,6 +120,7 @@ Lists come in pages, because a library can run to 100,000 tracks. A page of trac
 - `plugins/fidelia/`: the Claude Code plugin. It runs its own copy of `server/index.js` (below) with Node.js, with Fidelia's port and your token from its settings.
 - `server/index.js`: the script inside `Fidelia.mcpb`, which Claude runs with its own Node. It hands each message to Fidelia at 127.0.0.1 with your token and writes back Fidelia's answer. When nothing answers, it opens Fidelia with no window (`open -g -b com.audiofile.fidelia --args -agent.headless YES`) and tries again for up to 45 seconds. It uses only Node's own modules.
 - `server.json`: Fidelia's entry in the official MCP Registry.
+- `tools/publish_listing.py` and `tools/listing.json`: how Fidelia's own CI keeps this repository, its releases and its registry entry equal to what Fidelia serves. When a Fidelia release changes its tools, the script writes them here from Fidelia itself, releases the new `Fidelia.mcpb` and publishes the new version to the registry. People never run it.
 - `glama/`, `Dockerfile` and `glama.json`: for Glama's automated build check only. Fidelia's server is part of the Fidelia app, so Glama's Linux build machine runs `server/index.js` against a stand-in that lists Fidelia's real tools (`glama/tools.json`, read from Fidelia itself) and answers every call with a note to install Fidelia. People never run these files.
 
 ## Privacy and security
