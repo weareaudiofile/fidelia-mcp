@@ -3,7 +3,7 @@
   "name": "engineering.audiofile/fidelia",
   "title": "Fidelia",
   "description": "Search and play the music you own in Fidelia, an audiophile music player for Mac.",
-  "version": "1.0.0",
+  "version": "2.13.7",
   "websiteUrl": "https://audiofile.engineering/fidelia",
   "repository": {
     "url": "https://github.com/weareaudiofile/fidelia-mcp",
@@ -11,7 +11,14 @@
   },
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/weareaudiofile/fidelia-mcp/v1.0.0/assets/fidelia-icon-512.png",
+      "src": "https://raw.githubusercontent.com/weareaudiofile/fidelia-mcp/v2.13.7/assets/fidelia-icon-1024.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "1024x1024"
+      ]
+    },
+    {
+      "src": "https://raw.githubusercontent.com/weareaudiofile/fidelia-mcp/v2.13.7/assets/fidelia-icon-512.png",
       "mimeType": "image/png",
       "sizes": [
         "512x512"
@@ -21,8 +28,8 @@
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/weareaudiofile/fidelia-mcp/releases/download/v1.0.0/Fidelia.mcpb",
-      "fileSha256": "022fa80fcd0e56dd70cd51ab85d9f58ae462f5b9d824108953c693697f947b4b",
+      "identifier": "https://github.com/weareaudiofile/fidelia-mcp/releases/download/v2.13.7/Fidelia.mcpb",
+      "fileSha256": "26ef06c6609d5fbf35072ec0e472994eaf9a890bb52bd0d0653ec1a135921ae6",
       "transport": {
         "type": "stdio"
       }

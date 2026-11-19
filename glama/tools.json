@@ -1,276 +1,285 @@
 {
-  "_about": "Fidelia's tool definitions, as Fidelia 2.13.6's own MCP server lists them. Read only by glama/stand-in.js for Glama's build check.",
+  "_about": "Fidelia's tool definitions, as Fidelia 2.13.7's own MCP server lists them. Read only by glama/stand-in.js for Glama's build check.",
   "server": {
     "name": "fidelia",
-    "version": "2.13.6"
+    "version": "2.13.7"
   },
   "instructions": "Fidelia is the person's music player and the library of music they own: their files, their Music app library, any servers they added, and the internet radio stations they keep (stations lists them; play takes a station by name or station_id). You can read all of it, play from it, queue, shuffle, pause and skip, set the volume, say what is playing, and make playlists or add to them. Nothing you do changes or removes a file. Every list comes in pages (limit, offset; next_offset until the end): libraries run to 100,000 tracks, so ask for what you need. A page of tracks is grouped by album (by_album): each album's id, title, artist and whatever all its tracks share (year, genre, composer, date added, disc, format) once, then its tracks with what is their own. search reads plain words as the person said them (\"irish trad\", \"the album I got yesterday\", \"something by Planxty\", \"composer Anonymous\", \"music from 2026\") and reports how it read them. Tags often say less than the person means — \"Folk\" where they mean Irish traditional music — so when search finds too little, read genres, artists_in_genre or composers and use what you know about the music to choose (when a piece was written is the composer's, not the recording's year), then play by album_id, artist or track_ids. Ids are opaque: pass back what a reply gave you.",
   "tools": [
     {
-      "description": "Search the whole library in plain words — a genre, an artist, an album, a song, a composer (\"composer Anonymous\", \"composed by Hildegard\"), a year (\"2026\", \"this year\") or decade, a date added (\"irish trad\", \"the album I got yesterday\", \"something by Planxty\", \"jazz from the fifties\"). Answers how the words were read, what play would choose, the albums (each with its whole track count) and artists found, a radio station of that name, and a page of tracks grouped by album (by_album: each album's id, title, artist and whatever all its tracks share — year, genre, composer, date added, disc, format — once, then its tracks with what is their own).",
-      "title": "Search the library",
-      "name": "search",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
         "openWorldHint": false,
-        "title": "Search the library",
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "title": "Search the library"
       },
+      "description": "Search the whole library in plain words — a genre, an artist, an album, a song, a composer (\"composer Anonymous\", \"composed by Hildegard\"), a year (\"2026\", \"this year\") or decade, a date added (\"irish trad\", \"the album I got yesterday\", \"something by Planxty\", \"jazz from the fifties\"). Answers how the words were read, what play would choose, the albums (each with its whole track count) and artists found, a radio station of that name, and a page of tracks grouped by album (by_album: each album's id, title, artist and whatever all its tracks share — year, genre, composer, date added, disc, format — once, then its tracks with what is their own).",
       "inputSchema": {
         "additionalProperties": false,
-        "required": [
-          "query"
-        ],
-        "type": "object",
         "properties": {
-          "query": {
-            "type": "string",
-            "description": "What to find, in plain words."
-          },
           "limit": {
-            "type": "integer",
-            "maximum": 100,
             "description": "How many to return (25 unless asked; at most 100).",
-            "minimum": 1
-          },
-          "offset": {
-            "description": "Where to start: 0, or the next_offset a reply gave.",
-            "minimum": 0,
-            "type": "integer"
-          }
-        }
-      }
-    },
-    {
-      "name": "genres",
-      "annotations": {
-        "title": "List genres",
-        "destructiveHint": false,
-        "readOnlyHint": true,
-        "idempotentHint": true,
-        "openWorldHint": false
-      },
-      "title": "List genres",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "type": "integer",
-            "description": "How many to return (25 unless asked; at most 500).",
+            "maximum": 100,
             "minimum": 1,
-            "maximum": 500
+            "type": "integer"
           },
           "offset": {
             "description": "Where to start: 0, or the next_offset a reply gave.",
             "minimum": 0,
             "type": "integer"
           },
-          "contains": {
-            "description": "Only genres holding these words.",
+          "query": {
+            "description": "What to find, in plain words.",
             "type": "string"
           }
         },
-        "additionalProperties": false
+        "required": [
+          "query"
+        ],
+        "type": "object"
       },
-      "description": "Every genre in the library as tagged, with how many tracks carry it, most first. Spellings that differ only in case or accents are one genre."
+      "name": "search",
+      "title": "Search the library"
     },
     {
-      "title": "List artists",
-      "name": "artists",
-      "description": "The library's artists (as albums credit them), most tracks first, with their track counts.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "offset": {
-            "type": "integer",
-            "minimum": 0,
-            "description": "Where to start: 0, or the next_offset a reply gave."
-          },
-          "limit": {
-            "minimum": 1,
-            "maximum": 500,
-            "description": "How many to return (25 unless asked; at most 500).",
-            "type": "integer"
-          }
-        },
-        "additionalProperties": false
-      },
       "annotations": {
-        "readOnlyHint": true,
-        "title": "List artists",
-        "openWorldHint": false,
         "destructiveHint": false,
-        "idempotentHint": true
-      }
-    },
-    {
-      "annotations": {
-        "title": "List composers",
-        "readOnlyHint": true,
         "idempotentHint": true,
-        "destructiveHint": false,
-        "openWorldHint": false
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List genres"
       },
-      "description": "Every composer in the library as tagged, with how many tracks carry them, most first. Spellings that differ only in case or accents are one composer. Names are short: ask for up to 500 at a time. A composer's tracks: search \"composer <name>\".",
-      "name": "composers",
+      "description": "Every genre in the library as tagged, with how many tracks carry it, most first. Spellings that differ only in case or accents are one genre.",
       "inputSchema": {
+        "additionalProperties": false,
         "properties": {
           "contains": {
-            "type": "string",
-            "description": "Only composers holding these words."
+            "description": "Only genres holding these words.",
+            "type": "string"
           },
           "limit": {
-            "type": "integer",
-            "maximum": 500,
             "description": "How many to return (25 unless asked; at most 500).",
-            "minimum": 1
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
           },
           "offset": {
             "description": "Where to start: 0, or the next_offset a reply gave.",
-            "type": "integer",
-            "minimum": 0
-          }
-        },
-        "type": "object",
-        "additionalProperties": false
-      },
-      "title": "List composers"
-    },
-    {
-      "description": "The artists whose tracks carry a genre (as genres names it), with their track counts, most first.",
-      "inputSchema": {
-        "required": [
-          "genre"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "genre": {
-            "type": "string",
-            "description": "The genre, as genres lists it."
-          },
-          "limit": {
-            "type": "integer",
-            "maximum": 500,
-            "description": "How many to return (25 unless asked; at most 500).",
-            "minimum": 1
-          },
-          "offset": {
             "minimum": 0,
-            "type": "integer",
-            "description": "Where to start: 0, or the next_offset a reply gave."
+            "type": "integer"
           }
         },
         "type": "object"
       },
-      "title": "List a genre's artists",
-      "name": "artists_in_genre",
-      "annotations": {
-        "title": "List a genre's artists",
-        "destructiveHint": false,
-        "readOnlyHint": true,
-        "idempotentHint": true,
-        "openWorldHint": false
-      }
+      "name": "genres",
+      "title": "List genres"
     },
     {
-      "name": "recently_added",
-      "title": "List recently added albums",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List artists"
+      },
+      "description": "The library's artists (as albums credit them), most tracks first, with their track counts.",
       "inputSchema": {
         "additionalProperties": false,
-        "type": "object",
         "properties": {
+          "limit": {
+            "description": "How many to return (25 unless asked; at most 500).",
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
+          },
           "offset": {
+            "description": "Where to start: 0, or the next_offset a reply gave.",
             "minimum": 0,
-            "type": "integer",
-            "description": "Where to start: 0, or the next_offset a reply gave."
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "artists",
+      "title": "List artists"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List composers"
+      },
+      "description": "Every composer in the library as tagged, with how many tracks carry them, most first. Spellings that differ only in case or accents are one composer. Names are short: ask for up to 500 at a time. A composer's tracks: search \"composer <name>\".",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "contains": {
+            "description": "Only composers holding these words.",
+            "type": "string"
           },
-          "since": {
-            "type": "string",
-            "description": "When, in plain words."
+          "limit": {
+            "description": "How many to return (25 unless asked; at most 500).",
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
           },
+          "offset": {
+            "description": "Where to start: 0, or the next_offset a reply gave.",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "composers",
+      "title": "List composers"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List a genre's artists"
+      },
+      "description": "The artists whose tracks carry a genre (as genres names it), with their track counts, most first.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "genre": {
+            "description": "The genre, as genres lists it.",
+            "type": "string"
+          },
+          "limit": {
+            "description": "How many to return (25 unless asked; at most 500).",
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Where to start: 0, or the next_offset a reply gave.",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "genre"
+        ],
+        "type": "object"
+      },
+      "name": "artists_in_genre",
+      "title": "List a genre's artists"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List recently added albums"
+      },
+      "description": "Albums added to the library in a window, newest first, with the day each was added and its whole track count. The window in plain words (\"yesterday\", \"last week\", \"the past 3 months\"); the last 30 days if none.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
           "limit": {
             "description": "How many to return (25 unless asked; at most 200).",
             "maximum": 200,
-            "type": "integer",
-            "minimum": 1
-          }
-        }
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "idempotentHint": true,
-        "openWorldHint": false,
-        "destructiveHint": false,
-        "title": "List recently added albums"
-      },
-      "description": "Albums added to the library in a window, newest first, with the day each was added and its whole track count. The window in plain words (\"yesterday\", \"last week\", \"the past 3 months\"); the last 30 days if none."
-    },
-    {
-      "description": "An album's tracks in disc and track order: the album's id, title, artist and whatever all the page's tracks share once, then a page of its tracks.",
-      "name": "album_tracks",
-      "annotations": {
-        "openWorldHint": false,
-        "title": "List an album's tracks",
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "readOnlyHint": true
-      },
-      "title": "List an album's tracks",
-      "inputSchema": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "album_id": {
-            "type": "string",
-            "description": "An album_id from another reply."
+            "minimum": 1,
+            "type": "integer"
           },
           "offset": {
             "description": "Where to start: 0, or the next_offset a reply gave.",
             "minimum": 0,
             "type": "integer"
           },
+          "since": {
+            "description": "When, in plain words.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "name": "recently_added",
+      "title": "List recently added albums"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List an album's tracks"
+      },
+      "description": "An album's tracks in disc and track order: the album's id, title, artist and whatever all the page's tracks share once, then a page of its tracks.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "album_id": {
+            "description": "An album_id from another reply.",
+            "type": "string"
+          },
           "limit": {
             "description": "How many to return (25 unless asked; at most 100).",
-            "minimum": 1,
             "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Where to start: 0, or the next_offset a reply gave.",
+            "minimum": 0,
             "type": "integer"
           }
         },
         "required": [
           "album_id"
-        ]
-      }
+        ],
+        "type": "object"
+      },
+      "name": "album_tracks",
+      "title": "List an album's tracks"
     },
     {
       "annotations": {
         "destructiveHint": false,
-        "readOnlyHint": true,
         "idempotentHint": true,
-        "title": "What's playing",
-        "openWorldHint": false
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "What's playing"
       },
-      "title": "What's playing",
       "description": "What is playing now: the track, where in it, the volume, shuffle and repeat, and where in the queue.",
-      "name": "now_playing",
       "inputSchema": {
         "additionalProperties": false,
-        "type": "object",
-        "properties": {}
-      }
+        "properties": {},
+        "type": "object"
+      },
+      "name": "now_playing",
+      "title": "What's playing"
     },
     {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List radio stations"
+      },
+      "description": "The internet radio stations in Fidelia's library: name, station_id, tags and preset number. Play one with play's station_id, or by name with station.",
       "inputSchema": {
+        "additionalProperties": false,
         "properties": {
           "contains": {
-            "type": "string",
-            "description": "Only stations whose name or tags hold these words."
+            "description": "Only stations whose name or tags hold these words.",
+            "type": "string"
           },
           "limit": {
             "description": "How many to return (25 unless asked; at most 200).",
-            "type": "integer",
             "maximum": 200,
-            "minimum": 1
+            "minimum": 1,
+            "type": "integer"
           },
           "offset": {
             "description": "Where to start: 0, or the next_offset a reply gave.",
@@ -278,46 +287,46 @@
             "type": "integer"
           }
         },
-        "additionalProperties": false,
         "type": "object"
       },
-      "description": "The internet radio stations in Fidelia's library: name, station_id, tags and preset number. Play one with play's station_id, or by name with station.",
-      "title": "List radio stations",
       "name": "stations",
-      "annotations": {
-        "destructiveHint": false,
-        "title": "List radio stations",
-        "idempotentHint": true,
-        "openWorldHint": false,
-        "readOnlyHint": true
-      }
+      "title": "List radio stations"
     },
     {
-      "description": "Play from the library, replacing the queue: plain words (Fidelia chooses the genre, artist, album, song or radio station they mean and plays it — a record in order, a genre or an artist's music shuffled), or an album_id, track_ids, playlist_id, genre, artist, station or station_id. shuffle overrides. With nothing named, resumes what was playing, or plays the newest album added.",
       "annotations": {
-        "openWorldHint": false,
         "destructiveHint": false,
-        "title": "Play",
+        "idempotentHint": false,
+        "openWorldHint": false,
         "readOnlyHint": false,
-        "idempotentHint": false
+        "title": "Play"
       },
+      "description": "Play from the library, replacing the queue: plain words (Fidelia chooses the genre, artist, album, song or radio station they mean and plays it — a record in order, a genre or an artist's music shuffled), or an album_id, track_ids, playlist_id, genre, artist, station or station_id. shuffle overrides. With nothing named, resumes what was playing, or plays the newest album added.",
       "inputSchema": {
+        "additionalProperties": false,
         "properties": {
+          "album_id": {
+            "description": "An album_id from another reply.",
+            "type": "string"
+          },
+          "artist": {
+            "description": "An artist as a reply named them.",
+            "type": "string"
+          },
           "genre": {
             "description": "A genre as genres lists it.",
             "type": "string"
           },
+          "playlist_id": {
+            "description": "A playlist id from playlists.",
+            "type": "string"
+          },
           "query": {
-            "type": "string",
-            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\")."
+            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\").",
+            "type": "string"
           },
           "shuffle": {
             "description": "Shuffle (true) or play in order (false); Fidelia's choice if left out.",
             "type": "boolean"
-          },
-          "playlist_id": {
-            "description": "A playlist id from playlists.",
-            "type": "string"
           },
           "station": {
             "description": "A radio station by name, as stations lists it.",
@@ -327,138 +336,142 @@
             "description": "A station_id from stations.",
             "type": "string"
           },
-          "album_id": {
-            "type": "string",
-            "description": "An album_id from another reply."
-          },
           "track_ids": {
             "description": "Track ids from other replies, in the order to use them.",
-            "type": "array",
             "items": {
-              "type": "string",
-              "description": "A track id."
+              "description": "A track id.",
+              "type": "string"
             },
-            "maxItems": 2000
-          },
-          "artist": {
-            "description": "An artist as a reply named them.",
-            "type": "string"
+            "maxItems": 2000,
+            "type": "array"
           }
         },
-        "additionalProperties": false,
         "type": "object"
       },
-      "title": "Play",
-      "name": "play"
+      "name": "play",
+      "title": "Play"
     },
     {
-      "title": "Add to the queue",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Add to the queue"
+      },
+      "description": "Add to the queue without stopping what plays: after the playing track (position \"next\") or at the end. Takes what play takes.",
       "inputSchema": {
         "additionalProperties": false,
-        "type": "object",
         "properties": {
-          "genre": {
-            "type": "string",
-            "description": "A genre as genres lists it."
-          },
-          "playlist_id": {
-            "type": "string",
-            "description": "A playlist id from playlists."
-          },
-          "track_ids": {
-            "items": {
-              "type": "string",
-              "description": "A track id."
-            },
-            "description": "Track ids from other replies, in the order to use them.",
-            "type": "array",
-            "maxItems": 2000
-          },
-          "query": {
-            "type": "string",
-            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\")."
-          },
           "album_id": {
             "description": "An album_id from another reply.",
             "type": "string"
           },
+          "artist": {
+            "description": "An artist as a reply named them.",
+            "type": "string"
+          },
+          "genre": {
+            "description": "A genre as genres lists it.",
+            "type": "string"
+          },
+          "playlist_id": {
+            "description": "A playlist id from playlists.",
+            "type": "string"
+          },
           "position": {
+            "description": "Where: next or end (end if left out).",
             "enum": [
               "next",
               "end"
             ],
-            "description": "Where: next or end (end if left out).",
             "type": "string"
           },
-          "artist": {
-            "description": "An artist as a reply named them.",
+          "query": {
+            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\").",
             "type": "string"
+          },
+          "track_ids": {
+            "description": "Track ids from other replies, in the order to use them.",
+            "items": {
+              "description": "A track id.",
+              "type": "string"
+            },
+            "maxItems": 2000,
+            "type": "array"
           }
-        }
+        },
+        "type": "object"
       },
       "name": "queue",
-      "description": "Add to the queue without stopping what plays: after the playing track (position \"next\") or at the end. Takes what play takes.",
-      "annotations": {
-        "destructiveHint": false,
-        "openWorldHint": false,
-        "title": "Add to the queue",
-        "readOnlyHint": false,
-        "idempotentHint": false
-      }
+      "title": "Add to the queue"
     },
     {
-      "title": "Pause",
-      "inputSchema": {
-        "properties": {},
-        "type": "object",
-        "additionalProperties": false
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Pause"
       },
       "description": "Pause playback.",
-      "annotations": {
-        "title": "Pause",
-        "destructiveHint": false,
-        "readOnlyHint": false,
-        "idempotentHint": false,
-        "openWorldHint": false
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {},
+        "type": "object"
       },
-      "name": "pause"
+      "name": "pause",
+      "title": "Pause"
     },
     {
-      "title": "Resume or skip",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Resume or skip"
+      },
+      "description": "Resume, toggle play/pause, skip to the next track, or go to the previous one.",
       "inputSchema": {
-        "type": "object",
-        "required": [
-          "command"
-        ],
         "additionalProperties": false,
         "properties": {
           "command": {
+            "description": "What to do.",
             "enum": [
               "resume",
               "toggle",
               "next",
               "previous"
             ],
-            "type": "string",
-            "description": "What to do."
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "command"
+        ],
+        "type": "object"
       },
       "name": "transport",
-      "description": "Resume, toggle play/pause, skip to the next track, or go to the previous one.",
-      "annotations": {
-        "readOnlyHint": false,
-        "idempotentHint": false,
-        "destructiveHint": false,
-        "openWorldHint": false,
-        "title": "Resume or skip"
-      }
+      "title": "Resume or skip"
     },
     {
-      "name": "set_volume",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Set the volume"
+      },
       "description": "Set Fidelia's volume as a percentage, or move it one step up or down (the step a Remote's buttons take).",
       "inputSchema": {
+        "additionalProperties": false,
         "properties": {
+          "percent": {
+            "description": "The level, 0 to 100.",
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
           "step": {
             "description": "One step up or down.",
             "enum": [
@@ -466,57 +479,49 @@
               "down"
             ],
             "type": "string"
-          },
-          "percent": {
-            "maximum": 100,
-            "minimum": 0,
-            "type": "number",
-            "description": "The level, 0 to 100."
           }
         },
-        "additionalProperties": false,
         "type": "object"
       },
-      "annotations": {
-        "title": "Set the volume",
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "idempotentHint": false,
-        "openWorldHint": false
-      },
+      "name": "set_volume",
       "title": "Set the volume"
     },
     {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Shuffle on or off"
+      },
+      "description": "Turn shuffle on or off, as the shuffle button does.",
       "inputSchema": {
         "additionalProperties": false,
-        "type": "object",
         "properties": {
           "on": {
-            "type": "boolean",
-            "description": "Shuffle on (true) or off (false)."
+            "description": "Shuffle on (true) or off (false).",
+            "type": "boolean"
           }
         },
         "required": [
           "on"
-        ]
+        ],
+        "type": "object"
       },
-      "annotations": {
-        "title": "Shuffle on or off",
-        "readOnlyHint": false,
-        "idempotentHint": false,
-        "openWorldHint": false,
-        "destructiveHint": false
-      },
-      "title": "Shuffle on or off",
-      "description": "Turn shuffle on or off, as the shuffle button does.",
-      "name": "set_shuffle"
+      "name": "set_shuffle",
+      "title": "Shuffle on or off"
     },
     {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Set repeat"
+      },
+      "description": "Repeat off, the whole queue (all), or the playing track (one).",
       "inputSchema": {
-        "type": "object",
-        "required": [
-          "mode"
-        ],
+        "additionalProperties": false,
         "properties": {
           "mode": {
             "description": "The repeat mode.",
@@ -528,187 +533,182 @@
             "type": "string"
           }
         },
-        "additionalProperties": false
-      },
-      "description": "Repeat off, the whole queue (all), or the playing track (one).",
-      "annotations": {
-        "idempotentHint": false,
-        "openWorldHint": false,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "title": "Set repeat"
+        "required": [
+          "mode"
+        ],
+        "type": "object"
       },
       "name": "set_repeat",
       "title": "Set repeat"
     },
     {
       "annotations": {
-        "openWorldHint": false,
-        "readOnlyHint": true,
         "destructiveHint": false,
         "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true,
         "title": "List playlists"
       },
-      "name": "playlists",
       "description": "The library's playlists with their track counts, and whether each can take tracks (the person's own lists can; smart lists, folders and a server's lists cannot).",
       "inputSchema": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
           "limit": {
             "description": "How many to return (25 unless asked; at most 200).",
-            "type": "integer",
             "maximum": 200,
-            "minimum": 1
+            "minimum": 1,
+            "type": "integer"
           },
           "offset": {
-            "type": "integer",
+            "description": "Where to start: 0, or the next_offset a reply gave.",
             "minimum": 0,
-            "description": "Where to start: 0, or the next_offset a reply gave."
+            "type": "integer"
           }
         },
-        "additionalProperties": false
+        "type": "object"
       },
+      "name": "playlists",
       "title": "List playlists"
     },
     {
       "annotations": {
-        "title": "List a playlist's tracks",
-        "openWorldHint": false,
         "destructiveHint": false,
         "idempotentHint": true,
-        "readOnlyHint": true
+        "openWorldHint": false,
+        "readOnlyHint": true,
+        "title": "List a playlist's tracks"
       },
-      "title": "List a playlist's tracks",
-      "name": "playlist_tracks",
       "description": "A playlist's tracks in its order, grouped by album where neighbours share one (by_album).",
       "inputSchema": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
-          "playlist_id": {
-            "type": "string",
-            "description": "A playlist id from playlists."
-          },
           "limit": {
-            "type": "integer",
             "description": "How many to return (25 unless asked; at most 100).",
+            "maximum": 100,
             "minimum": 1,
-            "maximum": 100
+            "type": "integer"
           },
           "offset": {
-            "type": "integer",
             "description": "Where to start: 0, or the next_offset a reply gave.",
-            "minimum": 0
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "playlist_id"
-        ]
-      }
-    },
-    {
-      "title": "Make a playlist",
-      "description": "Make a new playlist in Fidelia, empty or holding what play would take (plain words, an album_id, track_ids, a genre or an artist), in that order.",
-      "name": "make_playlist",
-      "inputSchema": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "track_ids": {
-            "items": {
-              "type": "string",
-              "description": "A track id."
-            },
-            "type": "array",
-            "maxItems": 2000,
-            "description": "Track ids from other replies, in the order to use them."
-          },
-          "name": {
-            "description": "The playlist's name.",
-            "type": "string"
-          },
-          "genre": {
-            "type": "string",
-            "description": "A genre as genres lists it."
-          },
-          "query": {
-            "type": "string",
-            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\")."
+            "minimum": 0,
+            "type": "integer"
           },
           "playlist_id": {
             "description": "A playlist id from playlists.",
             "type": "string"
-          },
-          "artist": {
-            "type": "string",
-            "description": "An artist as a reply named them."
-          },
-          "album_id": {
-            "description": "An album_id from another reply.",
-            "type": "string"
           }
-        }
+        },
+        "required": [
+          "playlist_id"
+        ],
+        "type": "object"
       },
-      "annotations": {
-        "title": "Make a playlist",
-        "idempotentHint": false,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "openWorldHint": false
-      }
+      "name": "playlist_tracks",
+      "title": "List a playlist's tracks"
     },
     {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false,
+        "title": "Make a playlist"
+      },
+      "description": "Make a new playlist in Fidelia, empty or holding what play would take (plain words, an album_id, track_ids, a genre or an artist), in that order.",
       "inputSchema": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
-          "genre": {
-            "type": "string",
-            "description": "A genre as genres lists it."
-          },
-          "query": {
-            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\").",
-            "type": "string"
-          },
           "album_id": {
-            "type": "string",
-            "description": "An album_id from another reply."
-          },
-          "playlist_id": {
-            "description": "The playlist, from playlists (an editable one).",
+            "description": "An album_id from another reply.",
             "type": "string"
           },
           "artist": {
             "description": "An artist as a reply named them.",
             "type": "string"
           },
+          "genre": {
+            "description": "A genre as genres lists it.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The playlist's name.",
+            "type": "string"
+          },
+          "playlist_id": {
+            "description": "A playlist id from playlists.",
+            "type": "string"
+          },
+          "query": {
+            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\").",
+            "type": "string"
+          },
           "track_ids": {
-            "items": {
-              "type": "string",
-              "description": "A track id."
-            },
             "description": "Track ids from other replies, in the order to use them.",
-            "type": "array",
-            "maxItems": 2000
+            "items": {
+              "description": "A track id.",
+              "type": "string"
+            },
+            "maxItems": 2000,
+            "type": "array"
           }
         },
-        "additionalProperties": false,
         "required": [
-          "playlist_id"
-        ]
+          "name"
+        ],
+        "type": "object"
       },
-      "description": "Add to the end of one of the person's playlists what play would take (plain words, an album_id, track_ids, a genre or an artist).",
-      "title": "Add to a playlist",
+      "name": "make_playlist",
+      "title": "Make a playlist"
+    },
+    {
       "annotations": {
         "destructiveHint": false,
-        "title": "Add to a playlist",
         "idempotentHint": false,
+        "openWorldHint": false,
         "readOnlyHint": false,
-        "openWorldHint": false
+        "title": "Add to a playlist"
       },
-      "name": "add_to_playlist"
+      "description": "Add to the end of one of the person's playlists what play would take (plain words, an album_id, track_ids, a genre or an artist).",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "album_id": {
+            "description": "An album_id from another reply.",
+            "type": "string"
+          },
+          "artist": {
+            "description": "An artist as a reply named them.",
+            "type": "string"
+          },
+          "genre": {
+            "description": "A genre as genres lists it.",
+            "type": "string"
+          },
+          "playlist_id": {
+            "description": "The playlist, from playlists (an editable one).",
+            "type": "string"
+          },
+          "query": {
+            "description": "What, in plain words (\"irish trad\", \"the album I got yesterday\").",
+            "type": "string"
+          },
+          "track_ids": {
+            "description": "Track ids from other replies, in the order to use them.",
+            "items": {
+              "description": "A track id.",
+              "type": "string"
+            },
+            "maxItems": 2000,
+            "type": "array"
+          }
+        },
+        "required": [
+          "playlist_id"
+        ],
+        "type": "object"
+      },
+      "name": "add_to_playlist",
+      "title": "Add to a playlist"
     }
   ]
 }
